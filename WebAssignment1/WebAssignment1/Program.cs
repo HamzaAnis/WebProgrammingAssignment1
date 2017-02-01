@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace WebAssignment1
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
         }
     }
 
-    class Customer
+    internal class Customer
     {
+        //++Attributes
         private string fullName;
         private string age;
         private string gender;
@@ -29,21 +30,181 @@ namespace WebAssignment1
         private string checkInTime;
         private string timeRemaining;
 
+
+        //+Constructor
         public Customer(string fullName, string age, string gender, string idCard, string balance, string reserveDays, string floorNo, string roomType, string roomNumber, string checkOutTime, string checkInTime, string timeRemaining)
         {
-            this.fullName = fullName;
-            this.age = age;
-            this.gender = gender;
-            this.idCard = idCard;
-            this.balance = balance;
-            this.reserveDays = reserveDays;
-            this.floorNo = floorNo;
-            this.roomType = roomType;
-            this.roomNumber = roomNumber;
-            this.checkOutTime = checkOutTime;
-            this.checkInTime = checkInTime;
-            this.timeRemaining = timeRemaining;
+            FullName = fullName;
+            Age = age;
+            Gender = gender;
+            IdCard = idCard;
+            Balance = balance;
+            ReserveDays = reserveDays;
+            FloorNo = floorNo;
+            RoomType = roomType;
+            RoomNumber = roomNumber;
+            CheckOutTime = checkOutTime;
+            CheckInTime = checkInTime;
+            TimeRemaining = timeRemaining;
         }
+
+        //+Containers
+        public string FullName
+        {
+            get
+            {
+                return fullName;
+            }
+
+            set
+            {
+                fullName = value;
+            }
+        }
+
+        public string Age
+        {
+            get
+            {
+                return age;
+            }
+
+            set
+            {
+                age = value;
+            }
+        }
+
+        public string Gender
+        {
+            get
+            {
+                return gender;
+            }
+
+            set
+            {
+                gender = value;
+            }
+        }
+
+        public string IdCard
+        {
+            get
+            {
+                return idCard;
+            }
+
+            set
+            {
+                idCard = value;
+            }
+        }
+
+        public string Balance
+        {
+            get
+            {
+                return balance;
+            }
+
+            set
+            {
+                balance = value;
+            }
+        }
+
+        public string ReserveDays
+        {
+            get
+            {
+                return reserveDays;
+            }
+
+            set
+            {
+                reserveDays = value;
+            }
+        }
+
+        public string FloorNo
+        {
+            get
+            {
+                return floorNo;
+            }
+
+            set
+            {
+                floorNo = value;
+            }
+        }
+
+        public string RoomType
+        {
+            get
+            {
+                return roomType;
+            }
+
+            set
+            {
+                roomType = value;
+            }
+        }
+
+        public string RoomNumber
+        {
+            get
+            {
+                return roomNumber;
+            }
+
+            set
+            {
+                roomNumber = value;
+            }
+        }
+
+        public string CheckOutTime
+        {
+            get
+            {
+                return checkOutTime;
+            }
+
+            set
+            {
+                checkOutTime = value;
+            }
+        }
+
+        public string CheckInTime
+        {
+            get
+            {
+                return checkInTime;
+            }
+
+            set
+            {
+                checkInTime = value;
+            }
+        }
+
+        public string TimeRemaining
+        {
+            get
+            {
+                return timeRemaining;
+            }
+
+            set
+            {
+                timeRemaining = value;
+            }
+        }
+
 
     }
 }
