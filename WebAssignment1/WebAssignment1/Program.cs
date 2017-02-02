@@ -14,6 +14,28 @@ namespace WebAssignment1
         }
     }
 
+    class Hotel
+    {
+        
+
+        public Hotel(int floor, int rooms)
+        {
+            this.floor = floor;
+            this.rooms = rooms;
+        }
+    }
+
+    class Room
+    {
+        private bool isBooked;
+        private string roomNO;
+        private string type;
+
+
+
+
+    }
+
     internal class Customer
     {
         //++Attributes
@@ -29,6 +51,7 @@ namespace WebAssignment1
         private string checkOutTime;
         private string checkInTime;
         private string timeRemaining;
+
 
 
         //+Constructor
