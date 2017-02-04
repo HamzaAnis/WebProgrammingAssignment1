@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,16 +14,17 @@ namespace WebAssignment1
     {
         private static void Main(string[] args)
         {
-            var PC = new Hotel("5", "10");
-            PC.InitializeRooms();
-
+            Console.WriteLine("Enter the number of floors");
+            var floor = Console.ReadLine();
+            Console.WriteLine("Enter the number of rooms");
+            var rooms = Console.ReadLine();
+            var PC = new Hotel(floor, rooms);
+            PC.MakeNewRooms();
         }
-
-        
     }
 }
 
-internal class Hotel: SystemException
+internal class Hotel : SystemException
 {
     private string floor;
     private string rooms;
@@ -42,7 +44,7 @@ internal class Hotel: SystemException
         var deserializer = new XmlSerializer(typeof(List<Room>));
         TextReader tr = new StreamReader(@filePath);
         List<Room> movie;
-        movie = (List<Room>)deserializer.Deserialize(tr);
+        movie = (List<Room>) deserializer.Deserialize(tr);
         tr.Close();
 
         return movie;
@@ -55,29 +57,37 @@ internal class Hotel: SystemException
         Rooms = rooms;
     }
 
-    public void InitializeRooms()
+    //+A function to make the xml file to store data first time for the rooms
+    public void MakeNewRooms()
     {
-        //reading data
-
-        Console.WriteLine("Welcome to the Hotel Management System");
-        Console.WriteLine("Enter the floor Number");
-        string floor = Console.ReadLine();
-        Console.WriteLine("Enter the room Number");
-        string roomNo = Console.ReadLine();
-
         var ab = new Room();
-        var lis = new List<Room>();
+        var list = new List<Room>();
 
-        ab.isBooked = false;
-        ab.roomNO = "12";
-        ab.type = "23";
-        
-        lis.Add(ab);
+        for (int i = 1; i <= int.Parse(floor); i++)
+        for (int j = 1; j <= int.Parse(rooms); j++)
+        {
+            var R = new Room();
+            R.isBooked = false;
+            R.floorNo = i.ToString();
+            R.roomNO = j.ToString();
+                //R.type="Hamza";
+            if (j <= 10)
+                R.type = "standard";
+            if ( j>10 && j <= 20)
+                R.type = "moderate";
+            if (j >20 & j <= 30)
+                R.type = "superior";
+            if (j > 30 & j <=40)
+                R.type = "j_suite";
+            if (j > 40 & j <= 50)
+                R.type = "suite";
 
+            //-adding this to the list
+            list.Add(R);
+        }
+        Console.ReadLine();
 
-
-        WritetoXml(lis, "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
-
+        WritetoXml(list, "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
     }
 
     public string Floor
@@ -97,9 +107,10 @@ internal class Hotel: SystemException
 
 public class Room
 {
-    public bool isBooked { get; set; }
-    public  string roomNO { get; set; }
+    public string floorNo { get; set; }
+    public string roomNO { get; set; }
     public string type { get; set; }
+    public bool isBooked { get; set; }
 
 
     public Room(bool isBooked, string roomNO, string type)
@@ -409,4 +420,3 @@ internal class Customer
         set { timeRemaining = value; }
     }
 }
-
