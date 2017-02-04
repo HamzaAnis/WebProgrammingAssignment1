@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
+using static System.Console;
 
 namespace WebAssignment1
 {
@@ -15,42 +19,74 @@ namespace WebAssignment1
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Enter the number of floors");
-            var floor = Console.ReadLine();
-            Console.WriteLine("Enter the number of rooms");
-            var rooms = Console.ReadLine();
+            Initialize();
+        }
 
-            var PC = new Hotel(floor, rooms);
-            PC.MakeNewRooms();
+        public static void Initialize()
+        {
+            var PC = new Hotel()
+            {
+                Floor = "5",
+                Rooms = "50"
+            };
+
+
+            while(true)
+            {
+                //+Menu
+                WriteLine("\t\t\t\t\t***********************");
+                WriteLine("\t\t\t\t\tHotel Management system ");
+                WriteLine("1:Re-initialize the rooms");             //--done
+                WriteLine("2:Re-initialize the Customers");
+                WriteLine("3:Reserve a Room");
+                WriteLine("4:Checkout");
+                WriteLine("5:Exit\n");
+
+                string choice = ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                    {
+                        //Use when to reinitialize the data
+                        Write("\n\tEnter the number of floors: ");
+                        var floor = ReadLine();
+                        Write("\tEnter the number of rooms: ");
+                        var rooms = ReadLine();
+                        PC.floor = floor;
+                        PC.Rooms = rooms;
+                        PC.MakeNewRooms();
+                        break;
+                    }
+                    case "2":
+                    {
+                        break;
+                    }
+                    case "3":
+                    {
+                        WriteLine("1:Customer is new ");
+                        WriteLine("Customer is old");
+                        Write("\nEnter your choice: ");
+                        string ch = ReadLine();
+                        break;
+                    }
+                    case "5":
+                        Application.Exit();
+                        break;
+                }
+                WriteLine("\n\n");
+            }
         }
     }
 }
 
-internal class Hotel : SystemException
+//!+Hotel Class Main
+public class Hotel : SystemException
 {
-    private string floor;
-    private string rooms;
-    private List<Room> r = new List<Room>();
-
-
-    public static void WritetoXml(List<Room> movies, string filePath)
-    {
-        var xls = new XmlSerializer(typeof(List<Room>));
-        TextWriter tw = new StreamWriter(filePath);
-        xls.Serialize(tw, movies);
-        tw.Close();
-    }
-
-    public static List<Room> ReadFromXml(string filePath)
-    {
-        var deserializer = new XmlSerializer(typeof(List<Room>));
-        TextReader tr = new StreamReader(@filePath);
-        List<Room> movie;
-        movie = (List<Room>) deserializer.Deserialize(tr);
-        tr.Close();
-
-        return movie;
-    }
+    public string floor;
+    public string rooms;
+    public List<Room> r = new List<Room>();
+    public List<Customer> C = new List<Customer>();
 
 
     public Hotel(string floor, string rooms)
@@ -59,11 +95,22 @@ internal class Hotel : SystemException
         Rooms = rooms;
     }
 
+    public Hotel()
+    {
+    }
+
+    public void ReadRoomData()
+    {
+
+    }
+
     //+A function to make the .xml file  and to store data first time for the rooms
     public void MakeNewRooms()
     {
         var ab = new Room();
         var list = new List<Room>();
+        WriteLine("pc data is {0} {1}", floor, rooms);
+
 
         for (var i = 1; i <= int.Parse(floor); i++)
         for (var j = 1; j <= int.Parse(rooms); j++)
@@ -87,17 +134,30 @@ internal class Hotel : SystemException
             //-adding this to the list
             list.Add(R);
         }
-        Console.ReadLine();
-
+        WriteLine("Rooms are re initialized");
         WritetoXml(list, "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
     }
 
-    public string Floor
+    public static void WritetoXml(List<Room> movies, string filePath)
     {
-        get { return floor; }
-
-        set { floor = value; }
+        var xls = new XmlSerializer(typeof(List<Room>));
+        TextWriter tw = new StreamWriter(filePath);
+        xls.Serialize(tw, movies);
+        tw.Close();
     }
+
+    public static List<Room> ReadFromXml(string filePath)
+    {
+        var deserializer = new XmlSerializer(typeof(List<Room>));
+        TextReader tr = new StreamReader(@filePath);
+        List<Room> movie;
+        movie = (List<Room>) deserializer.Deserialize(tr);
+        tr.Close();
+
+        return movie;
+    }
+
+    public string Floor { get; set; }
 
     public string Rooms
     {
