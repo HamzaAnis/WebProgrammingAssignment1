@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace WebAssignment1
 {
@@ -13,7 +15,6 @@ namespace WebAssignment1
         {
             Hotel PC = new Hotel("5", "10");
             PC.initializeRooms();
-            
         }
     }
 }
@@ -22,7 +23,7 @@ class Hotel
 {
     private string floor;
     private string rooms;
-    List< Room> r=new List<Room>();
+    List<Room> r = new List<Room>();
 
 
     public Hotel(string floor, string rooms)
@@ -43,28 +44,36 @@ class Hotel
 
     public string Floor
     {
-        get
-        {
-            return floor;
-        }
+        get { return floor; }
 
-        set
-        {
-            floor = value;
-        }
+        set { floor = value; }
     }
 
     public string Rooms
     {
-        get
-        {
-            return rooms;
-        }
+        get { return rooms; }
 
-        set
-        {
-            rooms = value;
-        }
+        set { rooms = value; }
+    }
+
+    public static void WritetoXml(List<Room> movies, string filePath)
+    {
+        XmlSerializer xls = new XmlSerializer(typeof(List<Room>));
+
+        TextWriter tw = new StreamWriter(filePath);
+        xls.Serialize(tw, movies);
+        tw.Close();
+    }
+
+    public static List<Room> ReadFromXml(string filePath)
+    {
+        XmlSerializer deserializer = new XmlSerializer(typeof(List<Room>));
+        TextReader tr = new StreamReader(@filePath);
+        List<Room> movie;
+        movie = (List<Room>) deserializer.Deserialize(tr);
+        tr.Close();
+
+        return movie;
     }
 }
 
