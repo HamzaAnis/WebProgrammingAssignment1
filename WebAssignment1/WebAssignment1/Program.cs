@@ -11,36 +11,67 @@ namespace WebAssignment1
     {
         private static void Main(string[] args)
         {
-
-  
+            Hotel PC = new Hotel("5", "10");
+            PC.initializeRooms();
+            
         }
-
-        void displayMenu()
-        {
-            Console.WriteLine("Welcome to the Hotel Management System");
-            Console.WriteLine("1:");
-        }
-
     }
 }
 
+//+Testing
 class Hotel
 {
-    private int floor;
-    private int rooms;
+    private string floor;
+    private string rooms;
+    List< Room> r=new List<Room>();
 
 
-    public Hotel(int floor, int rooms)
+    public Hotel(string floor, string rooms)
     {
-        this.floor = floor;
-        this.rooms = rooms;
+        this.Floor = floor;
+        this.Rooms = rooms;
+    }
+
+    public void initializeRooms()
+    {
+        Console.WriteLine("Welcome to the Hotel Management System");
+        Console.WriteLine("Enter the room Details");
+        Console.WriteLine("Enter the floor Number");
+        string floor = Console.ReadLine();
+        Console.WriteLine("Enter the room Number");
+        string roomNo = Console.ReadLine();
+    }
+
+    public string Floor
+    {
+        get
+        {
+            return floor;
+        }
+
+        set
+        {
+            floor = value;
+        }
+    }
+
+    public string Rooms
+    {
+        get
+        {
+            return rooms;
+        }
+
+        set
+        {
+            rooms = value;
+        }
     }
 }
 
 class Room
 {
     private bool isBooked;
-    private string bool
     private string roomNO;
     private string type;
 
@@ -53,41 +84,44 @@ class Room
 
     public bool IsBooked
     {
-        get
-        {
-            return isBooked;
-        }
+        get { return IsBooked1; }
 
-        set
-        {
-            isBooked = value;
-        }
+        set { IsBooked1 = value; }
     }
 
     public string RoomNO
     {
-        get
-        {
-            return roomNO;
-        }
+        get { return RoomNO1; }
 
-        set
-        {
-            roomNO = value;
-        }
+        set { RoomNO1 = value; }
     }
 
     public string Type
     {
-        get
-        {
-            return type;
-        }
+        get { return Type1; }
 
-        set
-        {
-            type = value;
-        }
+        set { Type1 = value; }
+    }
+
+    public bool IsBooked1
+    {
+        get { return isBooked; }
+
+        set { isBooked = value; }
+    }
+
+    public string RoomNO1
+    {
+        get { return roomNO; }
+
+        set { roomNO = value; }
+    }
+
+    public string Type1
+    {
+        get { return type; }
+
+        set { type = value; }
     }
 }
 
@@ -96,9 +130,16 @@ class standard : Room
     private int price;
 
     //+Will call the super constructor 
-    public standard( bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
+    public standard(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.price = 300;
+        this.Price = 300;
+    }
+
+    public int Price
+    {
+        get { return price; }
+
+        set { price = value; }
     }
 }
 
@@ -107,21 +148,37 @@ class moderate : Room
     private int price;
 
     //+Will call the super constructor 
-    public moderate( bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
+    public moderate(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.price = 500;
+        this.Price = 500;
+    }
+
+    public int Price
+    {
+        get { return price; }
+
+        set { price = value; }
     }
 }
+
 class superior : Room
 {
     private int price;
 
     //+Will call the super constructor 
-    public superior( bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
+    public superior(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.price = 1000;
+        this.Price = 1000;
+    }
+
+    public int Price
+    {
+        get { return price; }
+
+        set { price = value; }
     }
 }
+
 class juniorSuite : Room
 {
     private int price;
@@ -129,9 +186,17 @@ class juniorSuite : Room
     //+Will call the super constructor 
     public juniorSuite(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.price = 1000;
+        this.Price = 1000;
+    }
+
+    public int Price
+    {
+        get { return price; }
+
+        set { price = value; }
     }
 }
+
 class suite : Room
 {
     private int price;
@@ -139,7 +204,14 @@ class suite : Room
     //+Will call the super constructor 
     public suite(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.price = 5000;
+        this.Price = 5000;
+    }
+
+    public int Price
+    {
+        get { return price; }
+
+        set { price = value; }
     }
 }
 
@@ -160,9 +232,10 @@ internal class Customer
     private string timeRemaining;
 
 
-
     //+Constructor
-    public Customer(string fullName, string age, string gender, string idCard, string balance, string reserveDays, string floorNo, string roomType, string roomNumber, string checkOutTime, string checkInTime, string timeRemaining)
+    public Customer(string fullName, string age, string gender, string idCard, string balance, string reserveDays,
+        string floorNo, string roomType, string roomNumber, string checkOutTime, string checkInTime,
+        string timeRemaining)
     {
         FullName = fullName;
         Age = age;
@@ -181,160 +254,170 @@ internal class Customer
     //+Containers
     public string FullName
     {
-        get
-        {
-            return fullName;
-        }
+        get { return FullName1; }
 
-        set
-        {
-            fullName = value;
-        }
+        set { FullName1 = value; }
     }
 
     public string Age
     {
-        get
-        {
-            return age;
-        }
+        get { return Age1; }
 
-        set
-        {
-            age = value;
-        }
+        set { Age1 = value; }
     }
 
     public string Gender
     {
-        get
-        {
-            return gender;
-        }
+        get { return Gender1; }
 
-        set
-        {
-            gender = value;
-        }
+        set { Gender1 = value; }
     }
 
     public string IdCard
     {
-        get
-        {
-            return idCard;
-        }
+        get { return IdCard1; }
 
-        set
-        {
-            idCard = value;
-        }
+        set { IdCard1 = value; }
     }
 
     public string Balance
     {
-        get
-        {
-            return balance;
-        }
+        get { return Balance1; }
 
-        set
-        {
-            balance = value;
-        }
+        set { Balance1 = value; }
     }
 
     public string ReserveDays
     {
-        get
-        {
-            return reserveDays;
-        }
+        get { return ReserveDays1; }
 
-        set
-        {
-            reserveDays = value;
-        }
+        set { ReserveDays1 = value; }
     }
 
     public string FloorNo
     {
-        get
-        {
-            return floorNo;
-        }
+        get { return FloorNo1; }
 
-        set
-        {
-            floorNo = value;
-        }
+        set { FloorNo1 = value; }
     }
 
     public string RoomType
     {
-        get
-        {
-            return roomType;
-        }
+        get { return RoomType1; }
 
-        set
-        {
-            roomType = value;
-        }
+        set { RoomType1 = value; }
     }
 
     public string RoomNumber
     {
-        get
-        {
-            return roomNumber;
-        }
+        get { return RoomNumber1; }
 
-        set
-        {
-            roomNumber = value;
-        }
+        set { RoomNumber1 = value; }
     }
 
     public string CheckOutTime
     {
-        get
-        {
-            return checkOutTime;
-        }
+        get { return CheckOutTime1; }
 
-        set
-        {
-            checkOutTime = value;
-        }
+        set { CheckOutTime1 = value; }
     }
 
     public string CheckInTime
     {
-        get
-        {
-            return checkInTime;
-        }
+        get { return CheckInTime1; }
 
-        set
-        {
-            checkInTime = value;
-        }
+        set { CheckInTime1 = value; }
     }
 
     public string TimeRemaining
     {
-        get
-        {
-            return timeRemaining;
-        }
+        get { return TimeRemaining1; }
 
-        set
-        {
-            timeRemaining = value;
-        }
+        set { TimeRemaining1 = value; }
     }
 
+    public string FullName1
+    {
+        get { return fullName; }
 
+        set { fullName = value; }
+    }
+
+    public string Age1
+    {
+        get { return age; }
+
+        set { age = value; }
+    }
+
+    public string Gender1
+    {
+        get { return gender; }
+
+        set { gender = value; }
+    }
+
+    public string IdCard1
+    {
+        get { return idCard; }
+
+        set { idCard = value; }
+    }
+
+    public string Balance1
+    {
+        get { return balance; }
+
+        set { balance = value; }
+    }
+
+    public string ReserveDays1
+    {
+        get { return reserveDays; }
+
+        set { reserveDays = value; }
+    }
+
+    public string FloorNo1
+    {
+        get { return floorNo; }
+
+        set { floorNo = value; }
+    }
+
+    public string RoomType1
+    {
+        get { return roomType; }
+
+        set { roomType = value; }
+    }
+
+    public string RoomNumber1
+    {
+        get { return roomNumber; }
+
+        set { roomNumber = value; }
+    }
+
+    public string CheckOutTime1
+    {
+        get { return checkOutTime; }
+
+        set { checkOutTime = value; }
+    }
+
+    public string CheckInTime1
+    {
+        get { return checkInTime; }
+
+        set { checkInTime = value; }
+    }
+
+    public string TimeRemaining1
+    {
+        get { return timeRemaining; }
+
+        set { timeRemaining = value; }
+    }
 }
 
