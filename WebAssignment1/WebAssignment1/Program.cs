@@ -19,6 +19,7 @@ namespace WebAssignment1
             var floor = Console.ReadLine();
             Console.WriteLine("Enter the number of rooms");
             var rooms = Console.ReadLine();
+
             var PC = new Hotel(floor, rooms);
             PC.MakeNewRooms();
         }
@@ -58,7 +59,7 @@ internal class Hotel : SystemException
         Rooms = rooms;
     }
 
-    //+A function to make the xml file to store data first time for the rooms
+    //+A function to make the .xml file  and to store data first time for the rooms
     public void MakeNewRooms()
     {
         var ab = new Room();
