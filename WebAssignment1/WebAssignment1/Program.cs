@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -63,23 +64,23 @@ internal class Hotel : SystemException
         var ab = new Room();
         var list = new List<Room>();
 
-        for (int i = 1; i <= int.Parse(floor); i++)
-        for (int j = 1; j <= int.Parse(rooms); j++)
+        for (var i = 1; i <= int.Parse(floor); i++)
+        for (var j = 1; j <= int.Parse(rooms); j++)
         {
             var R = new Room();
             R.isBooked = false;
             R.floorNo = i.ToString();
             R.roomNO = j.ToString();
-                //R.type="Hamza";
+            //R.type="Hamza";
             if (j <= 10)
                 R.type = "standard";
-            if ( j>10 && j <= 20)
+            if (j > 10 && j <= 20)
                 R.type = "moderate";
-            if (j >20 & j <= 30)
+            if ((j > 20) & (j <= 30))
                 R.type = "superior";
-            if (j > 30 & j <=40)
+            if ((j > 30) & (j <= 40))
                 R.type = "j_suite";
-            if (j > 40 & j <= 50)
+            if ((j > 40) & (j <= 50))
                 R.type = "suite";
 
             //-adding this to the list
@@ -143,7 +144,7 @@ internal class standard : Room
     }
 }
 
-internal class moderate : Room
+public class moderate : Room
 {
     private int price;
 
@@ -161,7 +162,7 @@ internal class moderate : Room
     }
 }
 
-internal class superior : Room
+public class superior : Room
 {
     private int price;
 
@@ -179,7 +180,7 @@ internal class superior : Room
     }
 }
 
-internal class juniorSuite : Room
+public class juniorSuite : Room
 {
     private int price;
 
@@ -215,21 +216,21 @@ internal class suite : Room
     }
 }
 
-internal class Customer
+public class Customer
 {
     //++Attributes
-    private string fullName;
-    private string age;
-    private string gender;
-    private string idCard;
-    private string balance;
-    private string reserveDays;
-    private string floorNo;
-    private string roomType;
-    private string roomNumber;
-    private string checkOutTime;
-    private string checkInTime;
-    private string timeRemaining;
+    private string fullName { get; set; }
+    private string age { get; set; }
+    private string gender { get; set; }
+    private string idCard { get; set; }
+    private string balance { get; set; }
+    private string reserveDays { get; set; }
+    private string floorNo { get; set; }
+    private string roomType { get; set; }
+    private string roomNumber { get; set; }
+    private string checkOutTime { get; set; }
+    private string checkInTime { get; set; }
+    private string timeRemaining { get; set; }
 
 
     //+Constructor
@@ -237,186 +238,17 @@ internal class Customer
         string floorNo, string roomType, string roomNumber, string checkOutTime, string checkInTime,
         string timeRemaining)
     {
-        FullName = fullName;
-        Age = age;
-        Gender = gender;
-        IdCard = idCard;
-        Balance = balance;
-        ReserveDays = reserveDays;
-        FloorNo = floorNo;
-        RoomType = roomType;
-        RoomNumber = roomNumber;
-        CheckOutTime = checkOutTime;
-        CheckInTime = checkInTime;
-        TimeRemaining = timeRemaining;
-    }
-
-    //+Containers
-    public string FullName
-    {
-        get { return FullName1; }
-
-        set { FullName1 = value; }
-    }
-
-    public string Age
-    {
-        get { return Age1; }
-
-        set { Age1 = value; }
-    }
-
-    public string Gender
-    {
-        get { return Gender1; }
-
-        set { Gender1 = value; }
-    }
-
-    public string IdCard
-    {
-        get { return IdCard1; }
-
-        set { IdCard1 = value; }
-    }
-
-    public string Balance
-    {
-        get { return Balance1; }
-
-        set { Balance1 = value; }
-    }
-
-    public string ReserveDays
-    {
-        get { return ReserveDays1; }
-
-        set { ReserveDays1 = value; }
-    }
-
-    public string FloorNo
-    {
-        get { return FloorNo1; }
-
-        set { FloorNo1 = value; }
-    }
-
-    public string RoomType
-    {
-        get { return RoomType1; }
-
-        set { RoomType1 = value; }
-    }
-
-    public string RoomNumber
-    {
-        get { return RoomNumber1; }
-
-        set { RoomNumber1 = value; }
-    }
-
-    public string CheckOutTime
-    {
-        get { return CheckOutTime1; }
-
-        set { CheckOutTime1 = value; }
-    }
-
-    public string CheckInTime
-    {
-        get { return CheckInTime1; }
-
-        set { CheckInTime1 = value; }
-    }
-
-    public string TimeRemaining
-    {
-        get { return TimeRemaining1; }
-
-        set { TimeRemaining1 = value; }
-    }
-
-    public string FullName1
-    {
-        get { return fullName; }
-
-        set { fullName = value; }
-    }
-
-    public string Age1
-    {
-        get { return age; }
-
-        set { age = value; }
-    }
-
-    public string Gender1
-    {
-        get { return gender; }
-
-        set { gender = value; }
-    }
-
-    public string IdCard1
-    {
-        get { return idCard; }
-
-        set { idCard = value; }
-    }
-
-    public string Balance1
-    {
-        get { return balance; }
-
-        set { balance = value; }
-    }
-
-    public string ReserveDays1
-    {
-        get { return reserveDays; }
-
-        set { reserveDays = value; }
-    }
-
-    public string FloorNo1
-    {
-        get { return floorNo; }
-
-        set { floorNo = value; }
-    }
-
-    public string RoomType1
-    {
-        get { return roomType; }
-
-        set { roomType = value; }
-    }
-
-    public string RoomNumber1
-    {
-        get { return roomNumber; }
-
-        set { roomNumber = value; }
-    }
-
-    public string CheckOutTime1
-    {
-        get { return checkOutTime; }
-
-        set { checkOutTime = value; }
-    }
-
-    public string CheckInTime1
-    {
-        get { return checkInTime; }
-
-        set { checkInTime = value; }
-    }
-
-    public string TimeRemaining1
-    {
-        get { return timeRemaining; }
-
-        set { timeRemaining = value; }
+        fullName = fullName;
+        age = age;
+        gender = gender;
+        idCard = idCard;
+        balance = balance;
+        reserveDays = reserveDays;
+        floorNo = floorNo;
+        roomType = roomType;
+        roomNumber = roomNumber;
+        checkOutTime = checkOutTime;
+        checkInTime = checkInTime;
+        timeRemaining = timeRemaining;
     }
 }
