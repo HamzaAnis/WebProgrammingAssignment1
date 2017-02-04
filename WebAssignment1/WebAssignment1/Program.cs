@@ -13,33 +13,71 @@ namespace WebAssignment1
     {
         private static void Main(string[] args)
         {
-            Hotel PC = new Hotel("5", "10");
-            PC.initializeRooms();
+            var PC = new Hotel("5", "10");
+            PC.InitializeRooms();
+
         }
+
+        
     }
 }
 
-class Hotel
+internal class Hotel: SystemException
 {
     private string floor;
     private string rooms;
-    List<Room> r = new List<Room>();
+    private List<Room> r = new List<Room>();
+
+
+    public static void WritetoXml(List<Room> movies, string filePath)
+    {
+        var xls = new XmlSerializer(typeof(List<Room>));
+        TextWriter tw = new StreamWriter(filePath);
+        xls.Serialize(tw, movies);
+        tw.Close();
+    }
+
+    public static List<Room> ReadFromXml(string filePath)
+    {
+        var deserializer = new XmlSerializer(typeof(List<Room>));
+        TextReader tr = new StreamReader(@filePath);
+        List<Room> movie;
+        movie = (List<Room>)deserializer.Deserialize(tr);
+        tr.Close();
+
+        return movie;
+    }
 
 
     public Hotel(string floor, string rooms)
     {
-        this.Floor = floor;
-        this.Rooms = rooms;
+        Floor = floor;
+        Rooms = rooms;
     }
 
-    public void initializeRooms()
+    public void InitializeRooms()
     {
+        //reading data
+
         Console.WriteLine("Welcome to the Hotel Management System");
-        Console.WriteLine("Enter the room Details");
         Console.WriteLine("Enter the floor Number");
         string floor = Console.ReadLine();
         Console.WriteLine("Enter the room Number");
         string roomNo = Console.ReadLine();
+
+        var ab = new Room();
+        var lis = new List<Room>();
+
+        ab.isBooked = false;
+        ab.roomNO = "12";
+        ab.type = "23";
+        
+        lis.Add(ab);
+
+
+
+        WritetoXml(lis, "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
+
     }
 
     public string Floor
@@ -55,92 +93,35 @@ class Hotel
 
         set { rooms = value; }
     }
-
-    public static void WritetoXml(List<Room> movies, string filePath)
-    {
-        XmlSerializer xls = new XmlSerializer(typeof(List<Room>));
-
-        TextWriter tw = new StreamWriter(filePath);
-        xls.Serialize(tw, movies);
-        tw.Close();
-    }
-
-    public static List<Room> ReadFromXml(string filePath)
-    {
-        XmlSerializer deserializer = new XmlSerializer(typeof(List<Room>));
-        TextReader tr = new StreamReader(@filePath);
-        List<Room> movie;
-        movie = (List<Room>) deserializer.Deserialize(tr);
-        tr.Close();
-
-        return movie;
-    }
 }
 
-class Room
+public class Room
 {
-    private bool isBooked;
-    private string roomNO;
-    private string type;
+    public bool isBooked { get; set; }
+    public  string roomNO { get; set; }
+    public string type { get; set; }
+
 
     public Room(bool isBooked, string roomNO, string type)
     {
-        this.IsBooked = isBooked;
-        this.RoomNO = roomNO;
-        this.Type = type;
+        isBooked = isBooked;
+        roomNO = roomNO;
+        type = type;
     }
 
-    public bool IsBooked
+    public Room()
     {
-        get { return IsBooked1; }
-
-        set { IsBooked1 = value; }
-    }
-
-    public string RoomNO
-    {
-        get { return RoomNO1; }
-
-        set { RoomNO1 = value; }
-    }
-
-    public string Type
-    {
-        get { return Type1; }
-
-        set { Type1 = value; }
-    }
-
-    public bool IsBooked1
-    {
-        get { return isBooked; }
-
-        set { isBooked = value; }
-    }
-
-    public string RoomNO1
-    {
-        get { return roomNO; }
-
-        set { roomNO = value; }
-    }
-
-    public string Type1
-    {
-        get { return type; }
-
-        set { type = value; }
     }
 }
 
-class standard : Room
+internal class standard : Room
 {
     private int price;
 
     //+Will call the super constructor 
     public standard(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.Price = 300;
+        Price = 300;
     }
 
     public int Price
@@ -151,14 +132,14 @@ class standard : Room
     }
 }
 
-class moderate : Room
+internal class moderate : Room
 {
     private int price;
 
     //+Will call the super constructor 
     public moderate(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.Price = 500;
+        Price = 500;
     }
 
     public int Price
@@ -169,14 +150,14 @@ class moderate : Room
     }
 }
 
-class superior : Room
+internal class superior : Room
 {
     private int price;
 
     //+Will call the super constructor 
     public superior(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.Price = 1000;
+        Price = 1000;
     }
 
     public int Price
@@ -187,14 +168,14 @@ class superior : Room
     }
 }
 
-class juniorSuite : Room
+internal class juniorSuite : Room
 {
     private int price;
 
     //+Will call the super constructor 
     public juniorSuite(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.Price = 1000;
+        Price = 1000;
     }
 
     public int Price
@@ -205,14 +186,14 @@ class juniorSuite : Room
     }
 }
 
-class suite : Room
+internal class suite : Room
 {
     private int price;
 
     //+Will call the super constructor 
     public suite(bool isBooked, string roomNo, string type) : base(isBooked, roomNo, type)
     {
-        this.Price = 5000;
+        Price = 5000;
     }
 
     public int Price
