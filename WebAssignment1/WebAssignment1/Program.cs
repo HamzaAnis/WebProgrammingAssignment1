@@ -18,7 +18,6 @@ namespace WebAssignment1
     }
 }
 
-//+Testing
 class Hotel
 {
     private string floor;
