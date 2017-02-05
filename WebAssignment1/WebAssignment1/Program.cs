@@ -150,8 +150,8 @@ public class Hotel : SystemException
 
     public void FindRoom()
     {
-        WriteLine("1:To see all rooms");
-        WriteLine("2:To see specific room");
+        WriteLine("\n\t1:To see all rooms: ");
+        Write("\t2:To see specific room: ");
         string cho = ReadLine();
 
         switch (cho)
@@ -170,14 +170,25 @@ public class Hotel : SystemException
             }
             case "2":
             {
-                WriteLine("Enter the floor No");
+                Write("\n\t\tEnter the floor No: ");
                 string f = ReadLine();
-                WriteLine("Enter the room No");
+                Write("\t\tEnter the room No: ");
                 string r = ReadLine();
 
-                int index = int.Parse(f) * 5 + int.Parse(r);
-                WriteLine("The floor number {0} with room no {1}" +
-                          "is {3}", this.r[index].floorNo, this.r[index].roomNO, this.r[index].type);
+                //Indexing in the list
+                int num = int.Parse(f);
+                num--;
+                int num1 = int.Parse(r);
+                num1--;
+                int index = 0;
+                if (num1 < int.Parse(this.Rooms))
+                    index = num * int.Parse(this.Floor) + num1; //these are the floor in hotel
+
+                //+Indexing
+                WriteLine(index);
+                WriteLine("Index is {0}", index);
+                WriteLine("The floor number {0} with room no {1} " +
+                          "is {2}", this.r[index].floorNo, this.r[index].roomNO, this.r[index].type);
                 if (!this.r[index].isBooked)
                 {
                     WriteLine("Staus: Not Reserved ");
