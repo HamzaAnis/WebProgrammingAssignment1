@@ -66,9 +66,17 @@ namespace WebAssignment1
                     case "3":
                     {
                         WriteLine("1:Customer is new ");
-                        WriteLine("Customer is old");
+                        WriteLine("2:Customer is old");
                         Write("\nEnter your choice: ");
                         string ch = ReadLine();
+                        if (ch == "1")
+                            PC.CDataBase.AddCustomer();
+                        else
+                        {
+                            WriteLine("Enter your id No");
+                            var id = ReadLine();
+                            PC.CDataBase.CustomerDetails(id);
+                        }
                         break;
                     }
                     case "5":
@@ -94,7 +102,7 @@ public class Hotel : SystemException
     public string floor;
     public string rooms;
     public List<Room> r = new List<Room>();
-    public List<Customer> C = new List<Customer>();
+    public CustomerData CDataBase = new CustomerData();
 
 
     public Hotel(string floor, string rooms)
@@ -226,6 +234,48 @@ public class Hotel : SystemException
     public string Rooms { get; set; }
 }
 
+public class CustomerData
+{
+    private readonly Dictionary<string, Customer> cData = new Dictionary<string, Customer>();
+
+    public void AddCustomer()
+    {
+        //--this will be added in the dictionary
+        var temp = new Customer();
+        Write("Enter name : ");
+        temp.FullName = Console.ReadLine();
+        Write("\nEnter age: ");
+        temp.Age = ReadLine();
+        Write("\nEnter Gender: ");
+        temp.Gender = ReadLine();
+        Write("\nEnter ID no: ");
+        temp.Id = ReadLine();
+        Write("\nEnter balance in Rs: ");
+        temp.Balance = ReadLine();
+        Write("\nEnter Floor no: ");
+        temp.FloorNo = ReadLine();
+        Write("\nEnter Room type: ");
+        temp.RoomType = ReadLine();
+        Write("\nEnter Room no: ");
+        temp.RoomNumber = ReadLine();
+        cData.Add(temp.Id, temp);
+    }
+
+    public void CustomerDetails(string id)
+    {
+        if (cData.ContainsKey(id))
+        {
+            var details = cData[id];
+        }
+        else
+            WriteLine("\n\tDetails not found ");
+    }
+
+    public void ReadData()
+    {
+    }
+}
+
 public class Room
 {
     public string floorNo { get; set; }
@@ -246,7 +296,7 @@ public class Room
     }
 }
 
-internal class standard : Room
+public class standard : Room
 {
     private int price;
 
@@ -318,7 +368,7 @@ public class juniorSuite : Room
     }
 }
 
-internal class suite : Room
+public class suite : Room
 {
     private int price;
 
@@ -338,21 +388,6 @@ internal class suite : Room
 
 public class Customer
 {
-    //++Attributes
-    private string fullName { get; set; }
-    private string age { get; set; }
-    private string gender { get; set; }
-    private string idCard { get; set; }
-    private string balance { get; set; }
-    private string reserveDays { get; set; }
-    private string floorNo { get; set; }
-    private string roomType { get; set; }
-    private string roomNumber { get; set; }
-    private string checkOutTime { get; set; }
-    private string checkInTime { get; set; }
-    private string timeRemaining { get; set; }
-
-
     //+Constructor
     public Customer(string fullName, string age, string gender, string idCard, string balance, string reserveDays,
         string floorNo, string roomType, string roomNumber, string checkOutTime, string checkInTime,
@@ -370,5 +405,121 @@ public class Customer
         checkOutTime = checkOutTime;
         checkInTime = checkInTime;
         timeRemaining = timeRemaining;
+    }
+
+    //++Attributes
+    private string _timeRemaining;
+    private string id;
+    private string fullName;
+    private string age;
+    private string gender;
+    private string idCard;
+    private string balance;
+    private string reserveDays;
+    private string floorNo;
+    private string roomType;
+    private string roomNumber;
+    private string checkOutTime;
+    private string checkInTime;
+
+    private string timeRemaining
+    {
+        get { return TimeRemaining; }
+        set { TimeRemaining = value; }
+    }
+
+    public string Id
+    {
+        get { return id; }
+
+        set { id = value; }
+    }
+
+    public string FullName
+    {
+        get { return fullName; }
+
+        set { fullName = value; }
+    }
+
+    public string Age
+    {
+        get { return age; }
+
+        set { age = value; }
+    }
+
+    public string Gender
+    {
+        get { return gender; }
+
+        set { gender = value; }
+    }
+
+    public string IdCard
+    {
+        get { return idCard; }
+
+        set { idCard = value; }
+    }
+
+    public string Balance
+    {
+        get { return balance; }
+
+        set { balance = value; }
+    }
+
+    public string ReserveDays
+    {
+        get { return reserveDays; }
+
+        set { reserveDays = value; }
+    }
+
+    public string FloorNo
+    {
+        get { return floorNo; }
+
+        set { floorNo = value; }
+    }
+
+    public string RoomType
+    {
+        get { return roomType; }
+
+        set { roomType = value; }
+    }
+
+    public string RoomNumber
+    {
+        get { return roomNumber; }
+
+        set { roomNumber = value; }
+    }
+
+    public string CheckOutTime
+    {
+        get { return checkOutTime; }
+
+        set { checkOutTime = value; }
+    }
+
+    public string CheckInTime
+    {
+        get { return checkInTime; }
+
+        set { checkInTime = value; }
+    }
+
+    public string TimeRemaining
+    {
+        get { return _timeRemaining; }
+
+        set { _timeRemaining = value; }
+    }
+
+    public Customer()
+    {
     }
 }
