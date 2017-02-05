@@ -31,16 +31,17 @@ namespace WebAssignment1
             };
 
 
-            while(true)
+            while (true)
             {
                 //+Menu
                 WriteLine("\t\t\t\t\t***********************");
                 WriteLine("\t\t\t\t\tHotel Management system ");
-                WriteLine("1:Re-initialize the rooms");             //--done
+                WriteLine("1:Re-initialize the rooms"); //--done
                 WriteLine("2:Re-initialize the Customers");
                 WriteLine("3:Reserve a Room");
                 WriteLine("4:Checkout");
-                WriteLine("5:Exit\n");
+                WriteLine("5:Check the rooms");
+                WriteLine("6:Exit\n");
 
                 string choice = ReadLine();
 
@@ -71,8 +72,15 @@ namespace WebAssignment1
                         break;
                     }
                     case "5":
+                    {
+                        PC.FindRoom();
+                        break;
+                    }
+                    case "6":
+                    {
                         Application.Exit();
                         break;
+                    }
                 }
                 WriteLine("\n\n");
             }
@@ -97,11 +105,13 @@ public class Hotel : SystemException
 
     public Hotel()
     {
+        ReadRoomData();
     }
 
+    //reading data of the rooms
     public void ReadRoomData()
     {
-
+        r = ReadFromXml("c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
     }
 
     //+A function to make the .xml file  and to store data first time for the rooms
@@ -109,33 +119,77 @@ public class Hotel : SystemException
     {
         var ab = new Room();
         var list = new List<Room>();
-        WriteLine("pc data is {0} {1}", floor, rooms);
+//        WriteLine("pc data is {0} {1}", floor, rooms);
 
 
         for (var i = 1; i <= int.Parse(floor); i++)
         for (var j = 1; j <= int.Parse(rooms); j++)
         {
             var R = new Room();
-            R.isBooked = false;
+            R.isBooked = false; //--every room will be not book
             R.floorNo = i.ToString();
             R.roomNO = j.ToString();
-            //R.type="Hamza";
+
             if (j <= 10)
-                R.type = "standard";
+                R.type = "Standard";
             if (j > 10 && j <= 20)
-                R.type = "moderate";
+                R.type = "Moderate";
             if ((j > 20) & (j <= 30))
-                R.type = "superior";
+                R.type = "Superior";
             if ((j > 30) & (j <= 40))
-                R.type = "j_suite";
+                R.type = "Junior Suite";
             if ((j > 40) & (j <= 50))
-                R.type = "suite";
+                R.type = "Suite";
 
             //-adding this to the list
             list.Add(R);
         }
         WriteLine("Rooms are re initialized");
         WritetoXml(list, "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
+    }
+
+    public void FindRoom()
+    {
+        WriteLine("1:To see all rooms");
+        WriteLine("2:To see specific room");
+        string cho = ReadLine();
+
+        switch (cho)
+        {
+            case "1":
+            {
+                foreach (var room in r)
+                {
+                    WriteLine(room.floorNo);
+                    WriteLine(room.roomNO);
+                    WriteLine(room.isBooked);
+                    WriteLine(room.type);
+                    WriteLine("\n\n");
+                }
+                break;
+            }
+            case "2":
+            {
+                WriteLine("Enter the floor No");
+                string f = ReadLine();
+                WriteLine("Enter the room No");
+                string r = ReadLine();
+
+                int index = int.Parse(f) * 5 + int.Parse(r);
+                WriteLine("The floor number {0} with room no {1}" +
+                          "is {3}", this.r[index].floorNo, this.r[index].roomNO, this.r[index].type);
+                if (!this.r[index].isBooked)
+                {
+                    WriteLine("Staus: Not Reserved ");
+                }
+                else
+                {
+                    WriteLine("Status: Reserved");
+                }
+
+                break;
+            }
+        }
     }
 
     public static void WritetoXml(List<Room> movies, string filePath)
@@ -150,21 +204,15 @@ public class Hotel : SystemException
     {
         var deserializer = new XmlSerializer(typeof(List<Room>));
         TextReader tr = new StreamReader(@filePath);
-        List<Room> movie;
-        movie = (List<Room>) deserializer.Deserialize(tr);
+        var temp = (List<Room>) deserializer.Deserialize(tr);
         tr.Close();
 
-        return movie;
+        return temp;
     }
 
     public string Floor { get; set; }
 
-    public string Rooms
-    {
-        get { return rooms; }
-
-        set { rooms = value; }
-    }
+    public string Rooms { get; set; }
 }
 
 public class Room
