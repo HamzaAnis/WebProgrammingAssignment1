@@ -41,7 +41,8 @@ namespace WebAssignment1
                 WriteLine("3:Reserve a Room");
                 WriteLine("4:Checkout");
                 WriteLine("5:Check the rooms");
-                WriteLine("6:Exit\n");
+                WriteLine("6:Find the customers: ");
+                WriteLine("7:Exit\n");
 
                 string choice = ReadLine();
 
@@ -86,6 +87,14 @@ namespace WebAssignment1
                     }
                     case "6":
                     {
+                        PC.CDataBase.ShowCustomers();
+                        WriteLine("\nEnter the id of the customer: ");
+                        string id = ReadLine();
+                        PC.CDataBase.CustomerDetails(id);
+                        break;
+                    }
+                    case "7":
+                    {
                         Application.Exit();
                         break;
                     }
@@ -113,7 +122,11 @@ public class Hotel : SystemException
 
     public Hotel()
     {
+        //On every start read the hotel data
         ReadRoomData();
+        //The data of the customers are read in the constructor of the CustomerData
+        //Read the Customer Database
+//        CDataBase.ReadData();
     }
 
     //reading data of the rooms
@@ -194,7 +207,7 @@ public class Hotel : SystemException
 
                 //+Indexing
                 WriteLine(index);
-                WriteLine("Index is {0}", index);
+//                WriteLine("Index is {0}", index);
                 WriteLine("The floor number {0} with room no {1} " +
                           "is {2}", this.r[index].floorNo, this.r[index].roomNO, this.r[index].type);
                 if (!this.r[index].isBooked)
@@ -211,11 +224,11 @@ public class Hotel : SystemException
         }
     }
 
-    public static void WritetoXml(List<Room> movies, string filePath)
+    public static void WritetoXml(List<Room> rooms, string filePath)
     {
         var xls = new XmlSerializer(typeof(List<Room>));
         TextWriter tw = new StreamWriter(filePath);
-        xls.Serialize(tw, movies);
+        xls.Serialize(tw, rooms);
         tw.Close();
     }
 
@@ -236,7 +249,17 @@ public class Hotel : SystemException
 
 public class CustomerData
 {
-    private readonly Dictionary<string, Customer> cData = new Dictionary<string, Customer>();
+    private readonly Dictionary<string, Customer> CData = new Dictionary<string, Customer>();
+
+    //+On every start of the porject the data of the customers will be loaded
+    public CustomerData()
+    {
+        List<Customer> c = ReadData();
+        foreach (var entry in c)
+        {
+            CData.Add(entry.IdCard, entry);
+        }
+    }
 
     public void AddCustomer()
     {
@@ -248,31 +271,99 @@ public class CustomerData
         temp.Age = ReadLine();
         Write("\nEnter Gender: ");
         temp.Gender = ReadLine();
-        Write("\nEnter ID no: ");
-        temp.Id = ReadLine();
+        Write("\nEnter ID Card no: ");
+        temp.IdCard = ReadLine();
         Write("\nEnter balance in Rs: ");
         temp.Balance = ReadLine();
+        Write("\nEnter the number of days to reserve: ");
+        temp.ReserveDays = ReadLine();
         Write("\nEnter Floor no: ");
         temp.FloorNo = ReadLine();
         Write("\nEnter Room type: ");
         temp.RoomType = ReadLine();
         Write("\nEnter Room no: ");
         temp.RoomNumber = ReadLine();
-        cData.Add(temp.Id, temp);
+        temp.CheckInTime = DateTime.Now;
+        if (temp.ReserveDays != null)
+            temp.CheckOutTime = temp.CheckInTime.AddHours(int.Parse(temp.ReserveDays) * 24);
+        //-the checkout time will be from the checking in time + number of days to reserve
+
+        if (!CData.ContainsKey(temp.IdCard))
+            CData.Add(temp.IdCard, temp);
+        else WriteLine("Customer with this Id already exists ");
+
+        WriteCustomer();
     }
 
     public void CustomerDetails(string id)
     {
-        if (cData.ContainsKey(id))
+        if (CData.ContainsKey(id))
         {
-            var details = cData[id];
+            var details = CData[id];
+            WriteLine("Name is {0}", details.FullName);
+            WriteLine("Age is {0}", details.Age);
+            WriteLine("Id Card No is {0}", details.IdCard);
+            WriteLine("Balance is {0}", details.Balance);
+            WriteLine("Total days to reserve is {0}", details.ReserveDays);
+            WriteLine("Room floor is {0}", details.FloorNo);
+            WriteLine("Room type is {0}", details.RoomType);
+            WriteLine("Room Number is {0}", details.RoomNumber);
+            WriteLine("Check in time is {0}", details.CheckInTime);
+            WriteLine("Checkout time is {0}", details.CheckOutTime);
+            WriteLine("Total time remaining is {0}", details.TimeRemaining);
         }
         else
             WriteLine("\n\tDetails not found ");
     }
 
-    public void ReadData()
+    public void ShowCustomers()
     {
+        foreach (var entry in CData)
+        {
+            var details = entry.Value;
+            WriteLine("Name is {0}", details.FullName);
+            WriteLine("Age is {0}", details.Age);
+            WriteLine("Id Card No is {0}", details.IdCard);
+            WriteLine("Balance is {0}", details.Balance);
+            WriteLine("Total days to reserve is {0}", details.ReserveDays);
+            WriteLine("Room floor is {0}", details.FloorNo);
+            WriteLine("Room type is {0}", details.RoomType);
+            WriteLine("Room Number is {0}", details.RoomNumber);
+            WriteLine("Check in time is {0}", details.CheckInTime);
+            WriteLine("Checkout time is {0}", details.CheckOutTime);
+            WriteLine("Total time remaining is {0}\n\n", details.TimeRemaining);
+        }
+    }
+
+    //Add the details of the customer to the xml file
+    public void WriteCustomer()
+    {
+        var xls = new XmlSerializer(typeof(List<Customer>));
+        TextWriter tw =
+            new StreamWriter(
+                "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\Customer_Details.xml");
+
+        List<Customer> temp = new List<Customer>();
+        foreach (var entry in CData)
+        {
+            temp.Add(entry.Value);
+        }
+        xls.Serialize(tw, temp);
+
+        tw.Close();
+    }
+
+    //It reads the data from the xml to the objects
+    public List<Customer> ReadData()
+    {
+        var deserializer = new XmlSerializer(typeof(List<Customer>));
+        TextReader tr =
+            new StreamReader(
+                "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\Customer_Details.xml");
+        List<Customer> temp = (List<Customer>) deserializer.Deserialize(tr);
+        tr.Close();
+
+        return temp;
     }
 }
 
@@ -408,8 +499,6 @@ public class Customer
     }
 
     //++Attributes
-    private string _timeRemaining;
-    private string id;
     private string fullName;
     private string age;
     private string gender;
@@ -419,21 +508,9 @@ public class Customer
     private string floorNo;
     private string roomType;
     private string roomNumber;
-    private string checkOutTime;
-    private string checkInTime;
-
-    private string timeRemaining
-    {
-        get { return TimeRemaining; }
-        set { TimeRemaining = value; }
-    }
-
-    public string Id
-    {
-        get { return id; }
-
-        set { id = value; }
-    }
+    private DateTime checkInTime;
+    private DateTime checkOutTime;
+    private DateTime timeRemaining;
 
     public string FullName
     {
@@ -498,25 +575,25 @@ public class Customer
         set { roomNumber = value; }
     }
 
-    public string CheckOutTime
-    {
-        get { return checkOutTime; }
-
-        set { checkOutTime = value; }
-    }
-
-    public string CheckInTime
+    public DateTime CheckInTime
     {
         get { return checkInTime; }
 
         set { checkInTime = value; }
     }
 
-    public string TimeRemaining
+    public DateTime CheckOutTime
     {
-        get { return _timeRemaining; }
+        get { return checkOutTime; }
 
-        set { _timeRemaining = value; }
+        set { checkOutTime = value; }
+    }
+
+    public DateTime TimeRemaining
+    {
+        get { return timeRemaining; }
+
+        set { timeRemaining = value; }
     }
 
     public Customer()
