@@ -71,12 +71,17 @@ namespace WebAssignment1
                         Write("\nEnter your choice: ");
                         string ch = ReadLine();
                         if (ch == "1")
-                            PC.CDataBase.AddCustomer();
+                        {
+                            string id = PC.CDataBase.AddCustomer();
+                            List<string> r_And_f= PC.CDataBase.Reserve(id);
+                            
+                        }
+
                         else
                         {
                             WriteLine("Enter your id No");
                             var id = ReadLine();
-                            PC.CDataBase.reserve(id);
+                            PC.CDataBase.Reserve(id);
                         }
 
                         break;
@@ -91,7 +96,7 @@ namespace WebAssignment1
                         PC.CDataBase.ShowCustomers();
                         WriteLine("\nEnter the id of the customer: ");
                         string id = ReadLine();
-                        PC.CDataBase.reserve(id);
+                        PC.CDataBase.Reserve(id);
                         break;
                     }
                     case "7":
@@ -111,7 +116,7 @@ public class Hotel : SystemException
 {
     public string floor;
     public string rooms;
-    public static List<Room> roomDataBase = new List<Room>();
+    public List<Room> RoomDataBase = new List<Room>();
     public CustomerData CDataBase = new CustomerData();
 
 
@@ -133,7 +138,8 @@ public class Hotel : SystemException
     //reading data of the rooms
     public void ReadRoomData()
     {
-        roomDataBase = ReadFromXml("c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
+        RoomDataBase =
+            ReadFromXml("c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
     }
 
     //+A function to make the .xml file  and to store data first time for the rooms
@@ -170,7 +176,7 @@ public class Hotel : SystemException
         WritetoXml(list, "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
     }
 
-    
+
     public void FindRoom()
     {
         WriteLine("\n\t1:To see all rooms: ");
@@ -181,7 +187,7 @@ public class Hotel : SystemException
         {
             case "1":
             {
-                foreach (var room in roomDataBase)
+                foreach (var room in RoomDataBase)
                 {
                     WriteLine(room.floorNo);
                     WriteLine(room.roomNO);
@@ -211,8 +217,9 @@ public class Hotel : SystemException
                 WriteLine(index);
 //                WriteLine("Index is {0}", index);
                 WriteLine("The floor number {0} with room no {1} " +
-                          "is {2}", this.roomDataBase[index].floorNo, this.roomDataBase[index].roomNO, this.roomDataBase[index].type);
-                if (!this.roomDataBase[index].isBooked)
+                          "is {2}", this.RoomDataBase[index].floorNo, this.RoomDataBase[index].roomNO,
+                    this.RoomDataBase[index].type);
+                if (!this.RoomDataBase[index].isBooked)
                 {
                     WriteLine("Status: Not Reserved ");
                 }
@@ -240,7 +247,6 @@ public class Hotel : SystemException
         TextReader tr = new StreamReader(@filePath);
         var temp = (List<Room>) deserializer.Deserialize(tr);
         tr.Close();
-
         return temp;
     }
 
@@ -263,10 +269,8 @@ public class CustomerData
         }
     }
 
-   
 
-
-    public void AddCustomer()
+    public string AddCustomer()
     {
         //--this will be added in the dictionary
         var temp = new Customer();
@@ -290,43 +294,14 @@ public class CustomerData
         else WriteLine("Customer with this Id already exists ");
 
         WriteCustomer();
+        return temp.IdCard;
     }
-
-     /*public void ReserveRoom(string id)
-    {
-        Write("\nEnter the number of days to reserve: ");
-        temp.ReserveDays = ReadLine();
-        Write("\nEnter Floor no: ");
-        temp.FloorNo = ReadLine();
-        //Room types
-        Write("\nSelect Room type: ");
-        WriteLine("/t1:Standard ");
-        WriteLine("\n2:Moderate ");
-        WriteLine("\n3:Superior ");
-        WriteLine("\n4:Junior Suite ");
-        WriteLine("\n5:Suite ");
-        string choice = ReadLine();
-        if (choice == "1")
-            temp.RoomType = "Standard";
-        if (choice == "2")
-            temp.RoomType = "Moderate";
-        if (choice == "3")
-            temp.RoomType = "Superior";
-        if (choice == "4")
-            temp.RoomType = "Junior Suite";
-        if (choice == "5")
-            temp.RoomType = "Suite";
-
-        //to display 
-        Write("\nEnter Room no: ");
-        WriteLine("The rooms available are: ");
-        temp.RoomNumber = ReadLine();
-    }*/
 
 
     //-It will reserve the room for a person
-    public void reserve(string id)
+    public List<string> Reserve(string id)
     {
+        List<string> reserveData = new List<string>();
         if (CData.ContainsKey(id))
         {
             var details = CData[id];
@@ -340,7 +315,14 @@ public class CustomerData
             WriteLine("Room Number is {0}", details.RoomNumber);
             WriteLine("Check in time is {0}", details.CheckInTime);
             WriteLine("Checkout time is {0}", details.CheckOutTime);
-            WriteLine("Total time remaining is {0}", details.TimeRemaining);
+
+            double hours = (details.CheckOutTime - details.CheckInTime).TotalHours;
+            if (hours > 0)
+            {
+                int days =(int) hours / 24;
+                double hrRemaing = hours - days * 24;
+                WriteLine("Total time remaining is {0} days and {1} hours ", days, hrRemaing);
+            }
 
 
             //-The process of reserving a room
@@ -350,7 +332,7 @@ public class CustomerData
             details.FloorNo = ReadLine();
             //Room types
             Write("\nSelect Room type: ");
-            WriteLine("/t1:Standard ");
+            WriteLine("\n1:Standard ");
             WriteLine("\n2:Moderate ");
             WriteLine("\n3:Superior ");
             WriteLine("\n4:Junior Suite ");
@@ -368,17 +350,17 @@ public class CustomerData
                 details.RoomType = "Suite";
 
 
-
             //to display 
             Write("\nEnter Room no: ");
             WriteLine("The rooms available are: ");
             details.RoomNumber = ReadLine();
+
+            //storing the data
+            reserveData.Add();
+
         }
         else
             WriteLine("\n\tDetails not found ");
-
-
-        
     }
 
     //-Helping function to show all the customers
@@ -397,7 +379,21 @@ public class CustomerData
             WriteLine("Room Number is {0}", details.RoomNumber);
             WriteLine("Check in time is {0}", details.CheckInTime);
             WriteLine("Checkout time is {0}", details.CheckOutTime);
-            WriteLine("Total time remaining is {0}\n\n", details.TimeRemaining);
+            double hours = (details.CheckOutTime - DateTime.Now).TotalHours;
+            if (hours > 0)
+            {
+                int days = (int)hours / 24;
+                int hrRemaing = (int)hours - days * 24;
+//                int minutes = days*24*60-hrRemaing*2
+                WriteLine("Total time remaining is {0} days and {1} hours ", days, hrRemaing);
+            }
+            else
+            {
+                WriteLine("The reservation period is ended ");
+
+            }
+            WriteLine("\n");
+
         }
     }
 
