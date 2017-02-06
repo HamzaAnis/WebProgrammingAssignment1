@@ -84,7 +84,7 @@ namespace WebAssignment1
                             PC.CDataBase.Reserve(id);
                         }
                         //this will chane the status of the respective room
-                        PC.reserveRoom(r_And_f);
+                        PC.ReserveRoom(r_And_f);
                         break;
                     }
                     case "5":
@@ -234,11 +234,16 @@ namespace WebAssignment1
                     break;
                 }
             }
-        }
+            }
 
-        public void reserveRoom(List<string> a)
+        public void ReserveRoom(List<string> a)
         {
+
+            //!++Here is the prblem
+            WriteLine("The 1ste is {0} and secind us {1} ",a[0],a[1]);
+            ReadLine();
             int num = int.Parse(a[0]);
+
             num--;
             int num1 = int.Parse(a[1]);
             num1--;
