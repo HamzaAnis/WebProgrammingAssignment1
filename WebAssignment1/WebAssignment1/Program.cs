@@ -93,6 +93,11 @@ namespace WebAssignment1
                             }
                             break;
                         }
+                    case "4":
+                    {
+                        PC.CheckOut();
+                        break;
+                    }
                     case "5":
                         {
                             PC.FindRoom();
@@ -145,9 +150,42 @@ namespace WebAssignment1
         //reading data of the rooms
         public void ReadRoomData()
         {
-            RoomDataBase =
-                ReadFromXml(
+            //            List<Room> roomList=new List<Room>();
+            //            RoomDataBase =
+            //                roomList=
+            RoomDataBase=ReadFromXml(
                     "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
+//            foreach (var entry in roomList)
+//            {
+//                if (roomList[)
+//            }
+        }
+
+        public void CheckOut()
+        {
+            WriteLine("Enter your id: ");
+            
+            string id = ReadLine();
+            if (CDataBase.CData.ContainsKey(id))
+            {
+                var variable = CDataBase.CData[id];
+//                WriteLine(variable.FloorNo);
+//                WriteLine(variable.RoomNumber);
+                int t = int.Parse(variable.FloorNo);
+                t--;
+                WriteLine("Index is[0]",t);
+                int toCheckout = t * 50 + int.Parse(variable.RoomNumber);
+
+
+                //the room is again set to false
+                RoomDataBase[toCheckout].isBooked = false;
+                WritetoXml(RoomDataBase,
+                        "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
+
+
+            }
+           
+
         }
 
         //+A function to make the .xml file  and to store data first time for the rooms
@@ -303,7 +341,7 @@ namespace WebAssignment1
 
     public class CustomerData
     {
-        private readonly Dictionary<string, Customer> CData = new Dictionary<string, Customer>();
+        public readonly Dictionary<string, Customer> CData = new Dictionary<string, Customer>();
 
         //+On every start of the project the data of the customers will be loaded
         public CustomerData()
