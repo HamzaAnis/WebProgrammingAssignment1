@@ -56,7 +56,7 @@ namespace WebAssignment1
                         Write("\tEnter the number of rooms: ");
                         var rooms = ReadLine();
                         PC.floor = floor;
-                        PC.Rooms = rooms;
+                        PC.rooms = rooms;
                         PC.MakeNewRooms();
                         break;
                     }
@@ -67,23 +67,25 @@ namespace WebAssignment1
                     case "3":
                     {
                         List<string> r_And_f = new List<string>();
+                        string id;
                         WriteLine("1:Customer is new ");
                         WriteLine("2:Customer is old");
                         Write("\nEnter your choice: ");
                         string ch = ReadLine();
                         if (ch == "1")
                         {
-                            string id = PC.CDataBase.AddCustomer();
-                            r_And_f = PC.CDataBase.Reserve(id);
+                            id = PC.CDataBase.AddCustomer();
                         }
 
                         else
                         {
                             WriteLine("Enter your id No");
-                            var id = ReadLine();
-                            PC.CDataBase.Reserve(id);
+                            id = ReadLine();
                         }
-                        //this will chane the status of the respective room
+                        r_And_f = PC.CDataBase.Reserve(id, PC.RoomDataBase);
+
+                        //this will change the status of the respective room
+
                         PC.ReserveRoom(r_And_f);
                         break;
                     }
@@ -151,6 +153,9 @@ namespace WebAssignment1
             var list = new List<Room>();
 //        WriteLine("pc data is {0} {1}", floor, rooms);
 
+
+//            WriteLine("The room data is {0}  {1}",floor,rooms);
+//            Read();
 
             for (var i = 1; i <= int.Parse(floor); i++)
             for (var j = 1; j <= int.Parse(rooms); j++)
@@ -234,26 +239,30 @@ namespace WebAssignment1
                     break;
                 }
             }
-            }
+        }
 
         public void ReserveRoom(List<string> a)
         {
+            //!++problem solved
 
-            //!++Here is the prblem
-            WriteLine("The 1ste is {0} and secind us {1} ",a[0],a[1]);
-            ReadLine();
-            int num = int.Parse(a[0]);
+            if (a.Count!=0)
+            {
+                int num = int.Parse(a[0]);
+                num--;
+                int num1 = int.Parse(a[1]);
+                num1--;
+                int index = 0;
+                index = num * int.Parse("50") + num1;
 
-            num--;
-            int num1 = int.Parse(a[1]);
-            num1--;
-            int index = 0;
-            index = num * int.Parse(this.Floor) + num1;
+                var tempToChange = RoomDataBase[index];
 
-            var tempToChange = RoomDataBase[index];
-            tempToChange.isBooked = true;
-            //will write all the data of the rooms in the file
-            WritetoXml(RoomDataBase, "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
+                WriteLine("Reserving room no {0}",index);
+                tempToChange.isBooked = true;
+                //will write all the data of the rooms in the file
+                WritetoXml(RoomDataBase,
+                    "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
+                WriteLine("Room data entered");
+            }
         }
 
         public static void WritetoXml(List<Room> rooms, string filePath)
@@ -322,7 +331,7 @@ namespace WebAssignment1
 
 
         //-It will reserve the room for a person
-        public List<string> Reserve(string id)
+        public List<string> Reserve(string id, List<Room> ro)
         {
             List<string> reserveData = new List<string>();
             if (CData.ContainsKey(id))
@@ -356,8 +365,20 @@ namespace WebAssignment1
                 if (details.ReserveDays != null)
                     details.CheckOutTime = details.CheckInTime.AddHours(int.Parse(details.ReserveDays) * 24);
 
-                Write("\nEnter Floor no: ");
-                details.FloorNo = ReadLine();
+                while (true)
+                {
+                    Write("\nEnter Floor no: ");
+                    details.FloorNo = ReadLine();
+                    if (details.FloorNo != null && int.Parse(details.FloorNo) < 6)
+                    {
+                        WriteLine("Entered");
+                        break;
+                    }
+                    else
+                    {
+                        WriteLine("Please enter the right floor");
+                    }
+                }
                 //Room types
                 Write("\nSelect Room type: ");
                 WriteLine("\n1:Standard ");
@@ -366,6 +387,7 @@ namespace WebAssignment1
                 WriteLine("\n4:Junior Suite ");
                 WriteLine("\n5:Suite ");
                 string choice = ReadLine();
+
                 if (choice == "1")
                     details.RoomType = "Standard";
                 if (choice == "2")
@@ -379,8 +401,8 @@ namespace WebAssignment1
 
 
                 //to display 
-                Write("\nEnter Room no: ");
                 WriteLine("The rooms available are: ");
+                Write("\nEnter Room no: ");
                 details.RoomNumber = ReadLine();
 
                 //storing the data
