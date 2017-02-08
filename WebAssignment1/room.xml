@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRoom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Room>
+    <isBooked>false</isBooked>
+    <roomNO>12</roomNO>
+    <type>23</type>
+  </Room>
+  <Room>
+    <isBooked>false</isBooked>
+    <roomNO>12</roomNO>
+    <type>23</type>
+  </Room>
+</ArrayOfRoom>
