@@ -174,8 +174,8 @@ namespace WebAssignment1
                 var variable = CDataBase.CData[id];
 
 //                variable.FullName = "Checking2";
-                WriteLine(variable.FloorNo);
-                CDataBase.WriteCustomer();
+//                WriteLine(variable.FloorNo);
+               
 
 
                 ReadLine();
@@ -188,6 +188,13 @@ namespace WebAssignment1
 
                 //the room is again set to false
                 RoomDataBase[toCheckout].isBooked = false;
+
+                //customer data reset
+                variable.FloorNo = null;
+                variable.RoomNumber = null;
+                CDataBase.WriteCustomer();
+
+
                 WritetoXml(RoomDataBase,
                     "c:\\Users\\hamza\\Source\\Repos\\WebProgrammingAssignment1\\WebAssignment1\\roomDetails.xml");
             }
@@ -238,53 +245,40 @@ namespace WebAssignment1
             Write("\t2:To see specific room: ");
             string cho = ReadLine();
 
-            switch (cho)
+            if (cho == "1")
             {
-                case "1":
+                foreach (var room in RoomDataBase)
                 {
-                    foreach (var room in RoomDataBase)
-                    {
-                        WriteLine(room.floorNo);
-                        WriteLine(room.roomNO);
-                        WriteLine(room.isBooked);
-                        WriteLine(room.type);
-                        WriteLine("\n\n");
-                    }
-                    break;
+                    WriteLine(room.floorNo);
+                    WriteLine(room.roomNO);
+                    WriteLine(room.isBooked);
+                    WriteLine(room.type);
+                    WriteLine("\n\n");
                 }
-                case "2":
-                {
-                    Write("\n\t\tEnter the floor No: ");
-                    string f = ReadLine();
-                    Write("\t\tEnter the room No: ");
-                    string r = ReadLine();
+            }
+            else if (cho == "2")
+            {
+                Write("\n\t\tEnter the floor No: ");
+                string f = ReadLine();
+                Write("\t\tEnter the room No: ");
+                string r = ReadLine();
 
-                    //Indexing in the list
-                    int num = int.Parse(f);
-                    num--;
-                    int num1 = int.Parse(r);
-                    num1--;
-                    int index = 0;
-                    if (num1 < int.Parse(this.Rooms))
-                        index = num * int.Parse(this.Floor) + num1; //these are the floor in hotel
+                //Indexing in the list
+                int num = int.Parse(f);
+                num--;
+                int num1 = int.Parse(r);
+                num1--;
+                int index = 0;
+                if (num1 < int.Parse(this.Rooms))
+                    index = num * int.Parse(this.Floor) + num1; //these are the floor in hotel
 
-                    //+Indexing
-                    WriteLine(index);
-                    //                WriteLine("Index is {0}", index);
-                    WriteLine("The floor number {0} with room no {1} " +
-                              "is {2}", this.RoomDataBase[index].floorNo, this.RoomDataBase[index].roomNO,
-                        this.RoomDataBase[index].type);
-                    if (!this.RoomDataBase[index].isBooked)
-                    {
-                        WriteLine("Status: Not Reserved ");
-                    }
-                    else
-                    {
-                        WriteLine("Status: Reserved");
-                    }
-
-                    break;
-                }
+                //+Indexing
+                WriteLine(index);
+                //                WriteLine("Index is {0}", index);
+                WriteLine("The floor number {0} with room no {1} " +
+                          "is {2}", this.RoomDataBase[index].floorNo, this.RoomDataBase[index].roomNO,
+                    this.RoomDataBase[index].type);
+                WriteLine(!this.RoomDataBase[index].isBooked ? "Status: Not Reserved " : "Status: Reserved");
             }
         }
 
@@ -378,7 +372,7 @@ namespace WebAssignment1
                 temp.CheckOutTime = temp.CheckInTime.AddHours(int.Parse(temp.ReserveDays) * 24);
             //-the checkout time will be from the checking in time + number of days to reserve
 
-            if (!CData.ContainsKey(temp.IdCard))
+            if (temp.IdCard != null && !CData.ContainsKey(temp.IdCard))
                 CData.Add(temp.IdCard, temp);
             else WriteLine("Customer with this Id already exists ");
 
