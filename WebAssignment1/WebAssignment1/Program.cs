@@ -324,7 +324,7 @@ namespace WebAssignment1
             tw.Close();
         }
 
-        public static List<Room> ReadFromXml(string filePath)
+        public static List<Room> ReadFromXml(string filePath)   
         {
             var deserializer = new XmlSerializer(typeof(List<Room>));
             TextReader tr = new StreamReader(@filePath);
